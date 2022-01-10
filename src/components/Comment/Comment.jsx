@@ -1,10 +1,18 @@
 import classes from './Comment.module.scss';
+import CommentContent from './CommentContent';
+import CommentReplies from './CommentReplies';
 
-function Comment() {
+function Comment(props) {
   return (
     <div className={classes['comment']}>
-      <div className={classes['comment__content']}></div>
-      <div className={classes['comment__replies']}></div>
+      <CommentContent
+        key={props.id}
+        content={props.content}
+        createdAt={props.createdAt}
+        score={props.score}
+        user={props.user}
+      />
+      {props.replies?.length > 0 && <CommentReplies replies={props.replies} />}
     </div>
   );
 }
