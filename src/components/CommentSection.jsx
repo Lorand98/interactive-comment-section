@@ -1,8 +1,7 @@
-import React from 'react';
-import './CommentSection.module.scss';
+import classes from './CommentSection.module.scss';
 
 function CommentSection() {
-  return <div>Loooooool</div>;
+  return <section className={classes['comment-section']}></section>;
 }
 
 export default CommentSection;
