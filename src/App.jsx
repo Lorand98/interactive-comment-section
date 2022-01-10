@@ -1,7 +1,8 @@
 import React from 'react';
+import CommentSection from './components/CommentSection';
 
 function App() {
-  return <div></div>;
+  return <CommentSection />;
 }
 
 export default App;
