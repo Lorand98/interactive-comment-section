@@ -1,6 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;1,300&family=Zen+Kaku+Gothic+New:wght@900&display=swap');
+@import '../abstracts/mixins';
+
+html {
+  font-size: 62.5%;
+  @include respond(phone) {
+    font-size: 50%;
+  }
+
+  @include respond(tab-port) {
+    font-size: 55%;
+  }
+
+  @include respond(tab-land) {
+    font-size: 60%;
+  }
+}
 
 body {
   font-family: 'Rubik', Arial, Helvetica, sans-serif;
   font-size: 1.6rem;
+  line-height: 2.5rem;
 }
