@@ -13,8 +13,16 @@ const commentSlice = createSlice({
   },
 });
 
+const currentUserSlice = createSlice({
+  name: 'user',
+  initialState: INITIAL_COMMENTS_DATA.currentUser,
+});
+
 const store = configureStore({
-  reducer: { comments: commentSlice.reducer },
+  reducer: {
+    comments: commentSlice.reducer,
+    currentUser: currentUserSlice.reducer,
+  },
 });
 
 export default store;

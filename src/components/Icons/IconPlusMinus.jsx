@@ -1,5 +1,3 @@
-import React from 'react';
-
 function IconPlusMinus(props) {
   return props.plus ? (
     <svg width='11' height='11' xmlns='http://www.w3.org/2000/svg'>
