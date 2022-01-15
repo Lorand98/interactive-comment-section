@@ -2,6 +2,7 @@ import classes from './CommentSection.module.scss';
 
 import { useSelector } from 'react-redux';
 import Comment from './Comment/Comment';
+import NewComment from './Comment/NewComment';
 
 function CommentSection() {
   const comments = useSelector((state) => state.comments);
@@ -10,6 +11,7 @@ function CommentSection() {
       {comments.map((comment) => (
         <Comment key={comment.id} {...comment} />
       ))}
+      <NewComment action='Send' />
     </section>
   );
 }

@@ -3,10 +3,13 @@
   margin: 1rem auto;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 2rem;
 
-  @include respond(tab-port) {
+  @include respond(tab-land) {
     max-width: 75%;
+  }
+  @include respond(tab-port) {
+    max-width: 90%;
   }
 
   @include respond(phone) {

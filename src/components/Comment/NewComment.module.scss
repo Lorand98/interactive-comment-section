@@ -1,0 +1,64 @@
+$general-gap: 1.5rem;
+
+.new-comment {
+  display: grid;
+  grid-template-columns: 1fr 7fr 1fr;
+  grid-template-rows: auto auto;
+
+  justify-items: center;
+
+  column-gap: $general-gap;
+
+  @include respond(tab-port) {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+  }
+
+  &__user-photo {
+    grid-column: 1;
+
+    max-width: 4rem;
+    max-height: auto;
+
+    @include respond(tab-port) {
+      grid-row: 2;
+
+      justify-self: start;
+    }
+  }
+
+  &__text {
+    grid-row: 1/-1;
+    grid-column: 2;
+    justify-self: stretch;
+
+    font-family: inherit;
+    font-size: 1.6rem;
+
+    caret-color: variables.$color-moderate-blue;
+    padding: 1.4rem;
+
+    border: 0.1rem variables.$color-light-gray solid;
+    outline-color: variables.$color-dark-blue;
+    border-radius: 1rem;
+
+    height: 8rem;
+    resize: none;
+
+    @include respond(tab-port) {
+      grid-row: 1;
+      grid-column: 1/-1;
+    }
+  }
+
+  &__submit {
+    grid-column: 3;
+
+    @include respond(tab-port) {
+      grid-column: 2;
+      grid-row: 2;
+
+      justify-self: end;
+    }
+  }
+}

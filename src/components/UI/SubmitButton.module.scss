@@ -1,0 +1,13 @@
+.submit-btn {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+
+  color: variables.$color-white;
+  background-color: variables.$color-moderate-blue;
+
+  border: none;
+  border-radius: 0.8rem;
+
+  padding: 1rem 2rem;
+}
