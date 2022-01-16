@@ -13,7 +13,6 @@
   }
 
   @include respond(phone) {
-    max-width: 100%;
-    margin: 1rem;
+    max-width: 95%;
   }
 }
