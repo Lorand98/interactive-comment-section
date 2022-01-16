@@ -3,10 +3,11 @@ import classes from './NewComment.module.scss';
 import Card from '../UI/Card';
 
 import { useSelector } from 'react-redux';
-import React, { useRef } from 'react';
+import React from 'react';
 import SubmitButton from '../UI/SubmitButton';
+import TextArea from '../UI/TextArea';
 
-const NewComment = React.forwardRef((props, ref) => {
+function NewComment(props) {
   const user = useSelector((state) => state.currentUser);
 
   const userImagePng = user.image.png.replace('./', '');
@@ -22,19 +23,16 @@ const NewComment = React.forwardRef((props, ref) => {
           alt='User photo'
         />
 
-        <textarea
-          type='text'
+        <TextArea
           className={classes['new-comment__text']}
-          autoFocus={props.autoFocus || false}
           placeholder='Add a comment...'
-          ref={ref}
-        ></textarea>
+        ></TextArea>
         <SubmitButton className={classes['new-comment__submit']}>
           {props.action}
         </SubmitButton>
       </div>
     </Card>
   );
-});
+}
 
 export default NewComment;

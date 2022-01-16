@@ -9,6 +9,8 @@ import IconDelete from '../Icons/IconDelete';
 import { Fragment, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import NewComment from './NewComment';
+import TextArea from '../UI/TextArea';
+import SubmitButton from '../UI/SubmitButton';
 
 function CommentContent(props) {
   const [replyingInProgress, setReplyingInProgress] = useState(false);
@@ -25,7 +27,7 @@ function CommentContent(props) {
   };
 
   const editHandler = () => {
-    setEditingInProgress(true);
+    setEditingInProgress((prevState) => !prevState);
   };
 
   return (
@@ -72,6 +74,12 @@ function CommentContent(props) {
           <div className={classes['comment__content__actions']}>
             {userIsCurrentUser ? (
               <Fragment>
+                <button className={classes['comment__content__delete-btn']}>
+                  <IconDelete
+                    className={classes['comment__content__delete-btn__icon']}
+                  />
+                  <span>Delete</span>
+                </button>
                 <button
                   className={classes['comment__content__edit-btn']}
                   onClick={editHandler}
@@ -80,12 +88,6 @@ function CommentContent(props) {
                     className={classes['comment__content__edit-btn__icon']}
                   />
                   <span>Edit</span>
-                </button>
-                <button className={classes['comment__content__delete-btn']}>
-                  <IconDelete
-                    className={classes['comment__content__delete-btn__icon']}
-                  />
-                  <span>Delete</span>
                 </button>
               </Fragment>
             ) : (
@@ -101,10 +103,15 @@ function CommentContent(props) {
             )}
           </div>
           {editingInProgress ? (
-            <textarea
-              className={classes['comment__content__text']}
-              value={props.content}
-            ></textarea>
+            <Fragment>
+              <TextArea
+                className={classes['comment__content__text']}
+                value={props.content}
+              ></TextArea>
+              <SubmitButton className={classes['comment__content__update-btn']}>
+                Update
+              </SubmitButton>
+            </Fragment>
           ) : (
             <p className={classes['comment__content__text']}>
               {props.replyingTo && (

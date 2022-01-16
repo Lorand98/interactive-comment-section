@@ -32,17 +32,7 @@ $general-gap: 1.5rem;
     grid-column: 2;
     justify-self: stretch;
 
-    font-family: inherit;
-    font-size: 1.6rem;
-
-    caret-color: variables.$color-moderate-blue;
-    padding: 1.4rem;
-
-    border: 0.1rem variables.$color-light-gray solid;
-    outline-color: variables.$color-dark-blue;
-    border-radius: 1rem;
-
-    height: 8rem;
+    min-height: 8rem;
     resize: none;
 
     @include respond(tab-port) {
