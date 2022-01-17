@@ -1,0 +1,16 @@
+@use '../../sass/abstracts/variables.module';
+
+.textarea {
+  font-family: inherit;
+  font-size: 1.6rem;
+  line-height: inherit;
+
+  caret-color: variables.$color-moderate-blue;
+  padding: 1.4rem;
+
+  border: 0.1rem variables.$color-light-gray solid;
+  outline-color: variables.$color-dark-blue;
+  border-radius: 1rem;
+
+  resize: none;
+}
