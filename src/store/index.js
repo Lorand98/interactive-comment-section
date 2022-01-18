@@ -1,10 +1,13 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { INITIAL_COMMENTS_DATA } from '../constants';
 
 const commentSlice = createSlice({
   name: 'comments',
-  initialState: INITIAL_COMMENTS_DATA.comments,
+  initialState: { comments: [] },
   reducers: {
+    setComments(state, action) {
+      state.comments = [...action.payload.comments];
+    },
+
     addComment(state) {},
 
     removeComment(state) {},
@@ -15,8 +18,23 @@ const commentSlice = createSlice({
 
 const currentUserSlice = createSlice({
   name: 'user',
-  initialState: INITIAL_COMMENTS_DATA.currentUser,
+  initialState: {
+    image: {
+      png: '',
+      webp: '',
+    },
+    username: '',
+  },
+  reducers: {
+    setCurrentUser(state, action) {
+      state.image = action.payload.image;
+      state.username = action.payload.username;
+    },
+  },
 });
+
+export const commentActions = commentSlice.actions;
+export const currentUserActions = currentUserSlice.actions;
 
 const store = configureStore({
   reducer: {
