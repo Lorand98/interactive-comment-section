@@ -15,15 +15,16 @@ function CommentSection() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let commentsData = localStorage.getItem('comments');
-    let currentUser = localStorage.getItem('currentUser');
+    let commentsData = JSON.parse(localStorage.getItem('comments'));
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
     if (!commentsData) {
       localStorage.setItem(
         'comments',
         JSON.stringify(INITIAL_COMMENTS_DATA.comments)
       );
     }
-    if (!currentUser) {
+    if (!currentUser || currentUser.image.png === '') {
       localStorage.setItem(
         'currentUser',
         JSON.stringify(INITIAL_COMMENTS_DATA.currentUser)
@@ -49,7 +50,9 @@ function CommentSection() {
   return (
     <section className={classes['comment-section']}>
       {comments.length === 0 || currentUser.image.png === '' ? (
-        <ClipLoader />
+        <span className={classes['comment-section__loading']}>
+          <ClipLoader size={100} />
+        </span>
       ) : (
         <Fragment>
           {comments.map((comment) => (
