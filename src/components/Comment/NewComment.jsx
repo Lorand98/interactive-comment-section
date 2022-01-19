@@ -2,17 +2,36 @@ import classes from './NewComment.module.scss';
 
 import Card from '../UI/Card';
 
-import { useSelector } from 'react-redux';
-import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, forwardRef } from 'react';
 import SubmitButton from '../UI/SubmitButton';
 import TextArea from '../UI/TextArea';
+import { commentActions } from '../../store';
 
-function NewComment(props) {
+const NewComment = forwardRef((props, ref) => {
   const user = useSelector((state) => state.currentUser);
+  const dispatch = useDispatch();
+
+  const [newComment, setNewComment] = useState('');
 
   const userImagePng = user.image.png.replace('./', '');
 
-  const submitCommentHandler = () => {};
+  const newCommentChangeHandler = (e) => {
+    setNewComment(e.target.value);
+  };
+
+  const submitCommentHandler = () => {
+    dispatch(
+      commentActions.addComment({
+        content: newComment,
+        user: user,
+        replyingTo: props.replyingTo,
+        parentCommentId: props.parentCommentId,
+      })
+    );
+    setNewComment('');
+    props.onReply && props.onReply();
+  };
 
   return (
     <Card>
@@ -26,6 +45,10 @@ function NewComment(props) {
         <TextArea
           className={classes['new-comment__text']}
           placeholder='Add a comment...'
+          value={newComment}
+          ref={ref}
+          onChange={newCommentChangeHandler}
+          autoFocus={props.autoFocus}
         ></TextArea>
         <SubmitButton
           className={classes['new-comment__submit']}
@@ -36,6 +59,6 @@ function NewComment(props) {
       </div>
     </Card>
   );
-}
+});
 
 export default NewComment;

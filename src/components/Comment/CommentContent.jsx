@@ -23,7 +23,7 @@ function CommentContent(props) {
 
   const replyHandler = () => {
     setReplyingInProgress((prevState) => !prevState);
-    replyTextRef.current?.focus();
+    replyingInProgress && replyTextRef.current.focus();
   };
 
   const editHandler = () => {
@@ -127,7 +127,14 @@ function CommentContent(props) {
         </div>
       </Card>
       {replyingInProgress && (
-        <NewComment action='Reply' ref={replyTextRef} autoFocus={true} />
+        <NewComment
+          action='Reply'
+          onReply={replyHandler}
+          ref={replyTextRef}
+          autoFocus={true}
+          replyingTo={props.user.username}
+          parentCommentId={props.parentCommentId}
+        />
       )}
     </div>
   );

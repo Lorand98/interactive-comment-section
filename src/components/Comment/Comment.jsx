@@ -6,13 +6,15 @@ function Comment(props) {
   return (
     <div className={classes['comment']}>
       <CommentContent
-        key={props.id}
         content={props.content}
         createdAt={props.createdAt}
         score={props.score}
         user={props.user}
+        parentCommentId={props.id}
       />
-      {props.replies?.length > 0 && <CommentReplies replies={props.replies} />}
+      {props.replies?.length > 0 && (
+        <CommentReplies parentCommentId={props.id} replies={props.replies} />
+      )}
     </div>
   );
 }

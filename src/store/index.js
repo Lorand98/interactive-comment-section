@@ -2,13 +2,52 @@ import { configureStore, createSlice } from '@reduxjs/toolkit';
 
 const commentSlice = createSlice({
   name: 'comments',
-  initialState: { comments: [] },
+  initialState: { comments: [], numberOfComments: 0 },
   reducers: {
     setComments(state, action) {
       state.comments = [...action.payload.comments];
+
+      state.numberOfComments = action.payload.comments.reduce(
+        (acc, comment) => {
+          if (comment.replies?.length > 0) {
+            const numberOfReplies = comment.replies.reduce((acc) => ++acc, 0);
+
+            return acc + numberOfReplies + 1;
+          }
+
+          return ++acc;
+        },
+        0
+      );
     },
 
-    addComment(state) {},
+    addComment(state, action) {
+      const { replyingTo } = action.payload;
+
+      if (replyingTo && replyingTo !== '') {
+        const parentComment = state.comments.find(
+          (comment) => comment.id === action.payload.parentCommentId
+        );
+
+        parentComment.replies.push({
+          id: ++state.numberOfComments,
+          content: action.payload.content,
+          createdAt: 'now',
+          score: 0,
+          replyingTo,
+          user: action.payload.user,
+        });
+      } else {
+        state.comments.push({
+          id: ++state.numberOfComments,
+          content: action.payload.content,
+          createdAt: 'now',
+          score: 0,
+          user: action.payload.user,
+          replies: [],
+        });
+      }
+    },
 
     removeComment(state) {},
 
