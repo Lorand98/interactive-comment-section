@@ -11,6 +11,7 @@ function Comment(props) {
         score={props.score}
         user={props.user}
         parentCommentId={props.id}
+        id={props.id}
       />
       {props.replies?.length > 0 && (
         <CommentReplies parentCommentId={props.id} replies={props.replies} />

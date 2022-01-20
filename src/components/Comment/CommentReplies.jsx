@@ -9,6 +9,7 @@ function CommentReplies(props) {
           key={reply.id}
           replyingTo={reply.user.username}
           parentCommentId={props.parentCommentId}
+          id={reply.id}
           {...reply}
         />
       ))}

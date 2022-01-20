@@ -49,6 +49,24 @@ const commentSlice = createSlice({
       }
     },
 
+    changeCommentScore(state, action) {
+      let targetComment;
+
+      for (const comment of state.comments) {
+        if (comment.id === action.payload.id) {
+          targetComment = comment;
+          break;
+        }
+
+        targetComment = comment.replies.find(
+          (reply) => reply.id === action.payload.id
+        );
+        if (targetComment) break;
+      }
+
+      action.payload.increase ? ++targetComment.score : --targetComment.score;
+    },
+
     removeComment(state) {},
 
     editComment(state) {},

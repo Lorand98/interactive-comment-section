@@ -7,12 +7,14 @@ import IconEdit from '../Icons/IconEdit';
 import IconDelete from '../Icons/IconDelete';
 
 import { Fragment, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import NewComment from './NewComment';
 import TextArea from '../UI/TextArea';
 import SubmitButton from '../UI/SubmitButton';
+import { commentActions } from '../../store';
 
 function CommentContent(props) {
+  const dispatch = useDispatch();
   const [replyingInProgress, setReplyingInProgress] = useState(false);
   const [editingInProgress, setEditingInProgress] = useState(false);
   const replyTextRef = useRef();
@@ -30,12 +32,24 @@ function CommentContent(props) {
     setEditingInProgress((prevState) => !prevState);
   };
 
+  const changeScoreHandler = (increase) => {
+    dispatch(
+      commentActions.changeCommentScore({
+        id: props.id,
+        increase,
+      })
+    );
+  };
+
   return (
     <div className={classes['comment__content-container']}>
       <Card>
         <div className={classes['comment__content']}>
           <div className={classes['comment__content__score']}>
-            <button className={classes['comment__content__score__btn']}>
+            <button
+              className={classes['comment__content__score__btn']}
+              onClick={changeScoreHandler.bind(null, true)}
+            >
               <IconPlusMinus
                 className={classes['comment__content__score__btn__icon']}
                 plus={true}
@@ -44,7 +58,10 @@ function CommentContent(props) {
             <p className={classes['comment__content__score__value']}>
               {props.score}
             </p>
-            <button className={classes['comment__content__score__btn']}>
+            <button
+              className={classes['comment__content__score__btn']}
+              onClick={changeScoreHandler.bind(null, false)}
+            >
               <IconPlusMinus
                 className={classes['comment__content__score__btn__icon']}
                 plus={false}
