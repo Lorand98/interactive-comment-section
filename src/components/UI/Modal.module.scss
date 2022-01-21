@@ -1,4 +1,5 @@
 @use '../../sass/abstracts/variables.module';
+@use '../../sass/abstracts/mixins.module';
 
 .modal {
   position: fixed;
@@ -25,5 +26,9 @@
     border-radius: 1rem;
 
     background-color: variables.$color-white;
+
+    @include mixins.respond(phone) {
+      width: 90%;
+    }
   }
 }
