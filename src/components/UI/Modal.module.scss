@@ -1,0 +1,29 @@
+@use '../../sass/abstracts/variables.module';
+
+.modal {
+  position: fixed;
+  &__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    min-width: 100vw;
+    background-color: variables.$color-black;
+    opacity: 0.4;
+    z-index: 10;
+  }
+
+  &__window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 11;
+    width: 35rem;
+
+    padding: 3rem;
+    border-radius: 1rem;
+
+    background-color: variables.$color-white;
+  }
+}

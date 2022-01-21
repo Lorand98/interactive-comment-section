@@ -67,6 +67,27 @@ const commentSlice = createSlice({
       action.payload.increase ? ++targetComment.score : --targetComment.score;
     },
 
+    deleteComment(state, action) {
+      for (const comment of state.comments) {
+        if (comment.id === action.payload.id) {
+          state.comments = state.comments.filter(
+            (comment) => comment.id !== action.payload.id
+          );
+
+          break;
+        }
+
+        const filteredReplies = comment.replies.filter(
+          (reply) => reply.id !== action.payload.id
+        );
+
+        if (filteredReplies.length !== comment.replies.length) {
+          comment.replies = filteredReplies;
+          break;
+        }
+      }
+    },
+
     removeComment(state) {},
 
     editComment(state) {},

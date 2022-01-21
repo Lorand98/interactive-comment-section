@@ -12,23 +12,25 @@ import NewComment from './NewComment';
 import TextArea from '../UI/TextArea';
 import SubmitButton from '../UI/SubmitButton';
 import { commentActions } from '../../store';
+import Modal from '../UI/Modal';
 
 function CommentContent(props) {
   const dispatch = useDispatch();
   const [replyingInProgress, setReplyingInProgress] = useState(false);
   const [editingInProgress, setEditingInProgress] = useState(false);
+  const [deletingInProgress, setDeletingInProgress] = useState(false);
   const replyTextRef = useRef();
 
   const userImagePng = props.user.image.png.replace('./', '');
   const currentUser = useSelector((state) => state.currentUser);
   const userIsCurrentUser = currentUser.username === props.user.username;
 
-  const replyHandler = () => {
+  const replyCommentHandler = () => {
     setReplyingInProgress((prevState) => !prevState);
     replyingInProgress && replyTextRef.current.focus();
   };
 
-  const editHandler = () => {
+  const editCommentHandler = () => {
     setEditingInProgress((prevState) => !prevState);
   };
 
@@ -37,6 +39,14 @@ function CommentContent(props) {
       commentActions.changeCommentScore({
         id: props.id,
         increase,
+      })
+    );
+  };
+
+  const deleteCommentHandler = () => {
+    dispatch(
+      commentActions.deleteComment({
+        id: props.id,
       })
     );
   };
@@ -91,7 +101,10 @@ function CommentContent(props) {
           <div className={classes['comment__content__actions']}>
             {userIsCurrentUser ? (
               <Fragment>
-                <button className={classes['comment__content__delete-btn']}>
+                <button
+                  className={classes['comment__content__delete-btn']}
+                  onClick={setDeletingInProgress.bind(null, true)}
+                >
                   <IconDelete
                     className={classes['comment__content__delete-btn__icon']}
                   />
@@ -99,7 +112,7 @@ function CommentContent(props) {
                 </button>
                 <button
                   className={classes['comment__content__edit-btn']}
-                  onClick={editHandler}
+                  onClick={editCommentHandler}
                 >
                   <IconEdit
                     className={classes['comment__content__edit-btn__icon']}
@@ -110,7 +123,7 @@ function CommentContent(props) {
             ) : (
               <button
                 className={classes['comment__content__reply-btn']}
-                onClick={replyHandler}
+                onClick={replyCommentHandler}
               >
                 <IconReply
                   className={classes['comment__content__reply-btn__icon']}
@@ -146,12 +159,44 @@ function CommentContent(props) {
       {replyingInProgress && (
         <NewComment
           action='Reply'
-          onReply={replyHandler}
+          onReply={replyCommentHandler}
           ref={replyTextRef}
           autoFocus={true}
           replyingTo={props.user.username}
           parentCommentId={props.parentCommentId}
         />
+      )}
+      {deletingInProgress && (
+        <Modal>
+          <div className={classes['comment__content__confirm-delete']}>
+            <h2 className={classes['comment__content__confirm-delete__header']}>
+              Delete comment
+            </h2>
+            <p className={classes['comment__content__confirm-delete__text']}>
+              Are you sure you want to delete this comment? This will remove the
+              comment and can't be undone
+            </p>
+
+            <div
+              className={
+                classes['comment__content__confirm-delete__btn-container']
+              }
+            >
+              <button
+                className={classes['comment__content__confirm-delete__btn']}
+                onClick={setDeletingInProgress.bind(null, false)}
+              >
+                No, cancel
+              </button>
+              <button
+                className={classes['comment__content__confirm-delete__btn']}
+                onClick={deleteCommentHandler}
+              >
+                Yes, delete
+              </button>
+            </div>
+          </div>
+        </Modal>
       )}
     </div>
   );
