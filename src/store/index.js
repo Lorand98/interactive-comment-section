@@ -1,5 +1,21 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
+const findComment = (comments, searchedCommentId) => {
+  let targetComment;
+
+  for (const comment of comments) {
+    if (comment.id === searchedCommentId) {
+      targetComment = comment;
+      return targetComment;
+    }
+
+    targetComment = comment.replies.find(
+      (reply) => reply.id === searchedCommentId
+    );
+    if (targetComment) return targetComment;
+  }
+};
+
 const commentSlice = createSlice({
   name: 'comments',
   initialState: { comments: [], numberOfComments: 0 },
@@ -50,19 +66,7 @@ const commentSlice = createSlice({
     },
 
     changeCommentScore(state, action) {
-      let targetComment;
-
-      for (const comment of state.comments) {
-        if (comment.id === action.payload.id) {
-          targetComment = comment;
-          break;
-        }
-
-        targetComment = comment.replies.find(
-          (reply) => reply.id === action.payload.id
-        );
-        if (targetComment) break;
-      }
+      const targetComment = findComment(state.comments, action.payload.id);
 
       action.payload.increase ? ++targetComment.score : --targetComment.score;
     },
@@ -88,9 +92,11 @@ const commentSlice = createSlice({
       }
     },
 
-    removeComment(state) {},
+    updateComment(state, action) {
+      const targetComment = findComment(state.comments, action.payload.id);
 
-    editComment(state) {},
+      targetComment.content = action.payload.content;
+    },
   },
 });
 

@@ -19,6 +19,7 @@ function CommentContent(props) {
   const [replyingInProgress, setReplyingInProgress] = useState(false);
   const [editingInProgress, setEditingInProgress] = useState(false);
   const [deletingInProgress, setDeletingInProgress] = useState(false);
+  const [editedCommentText, setEditedCommentText] = useState(props.content);
   const replyTextRef = useRef();
 
   const userImagePng = props.user.image.png.replace('./', '');
@@ -30,8 +31,22 @@ function CommentContent(props) {
     replyingInProgress && replyTextRef.current.focus();
   };
 
-  const editCommentHandler = () => {
+  const editCommentInProgressHandler = () => {
     setEditingInProgress((prevState) => !prevState);
+  };
+
+  const editCommentHandler = (e) => {
+    setEditedCommentText(e.target.value);
+  };
+
+  const commentUpdateHandler = () => {
+    dispatch(
+      commentActions.updateComment({
+        id: props.id,
+        content: editedCommentText,
+      })
+    );
+    editCommentInProgressHandler();
   };
 
   const changeScoreHandler = (increase) => {
@@ -112,7 +127,7 @@ function CommentContent(props) {
                 </button>
                 <button
                   className={classes['comment__content__edit-btn']}
-                  onClick={editCommentHandler}
+                  onClick={editCommentInProgressHandler}
                 >
                   <IconEdit
                     className={classes['comment__content__edit-btn__icon']}
@@ -135,10 +150,14 @@ function CommentContent(props) {
           {editingInProgress ? (
             <Fragment>
               <TextArea
-                className={classes['comment__content__text']}
-                value={props.content}
+                className={classes['comment__content__text-edit']}
+                value={editedCommentText}
+                onChange={editCommentHandler}
               ></TextArea>
-              <SubmitButton className={classes['comment__content__update-btn']}>
+              <SubmitButton
+                className={classes['comment__content__update-btn']}
+                onClick={commentUpdateHandler}
+              >
                 Update
               </SubmitButton>
             </Fragment>
