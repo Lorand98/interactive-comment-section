@@ -11,6 +11,7 @@ import { ClipLoader } from 'react-spinners';
 
 function CommentSection() {
   const comments = useSelector((state) => state.comments.comments);
+  const commentsChanged = useSelector((state) => state.comments.isChanged);
   const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
 
@@ -18,7 +19,7 @@ function CommentSection() {
     let commentsData = JSON.parse(localStorage.getItem('comments'));
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if (!commentsData) {
+    if (!commentsData || commentsData.length === 0) {
       localStorage.setItem(
         'comments',
         JSON.stringify(INITIAL_COMMENTS_DATA.comments)
@@ -46,6 +47,12 @@ function CommentSection() {
       })
     );
   }, [dispatch]);
+
+  useEffect(() => {
+    if (commentsChanged) {
+      localStorage.setItem('comments', JSON.stringify(comments));
+    }
+  }, [commentsChanged, comments]);
 
   return (
     <section className={classes['comment-section']}>

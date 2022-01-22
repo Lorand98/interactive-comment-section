@@ -18,7 +18,7 @@ const findComment = (comments, searchedCommentId) => {
 
 const commentSlice = createSlice({
   name: 'comments',
-  initialState: { comments: [], numberOfComments: 0 },
+  initialState: { comments: [], numberOfComments: 0, isChanged: false },
   reducers: {
     setComments(state, action) {
       state.comments = [...action.payload.comments];
@@ -63,12 +63,16 @@ const commentSlice = createSlice({
           replies: [],
         });
       }
+
+      state.isChanged = true;
     },
 
     changeCommentScore(state, action) {
       const targetComment = findComment(state.comments, action.payload.id);
 
       action.payload.increase ? ++targetComment.score : --targetComment.score;
+
+      state.isChanged = true;
     },
 
     deleteComment(state, action) {
@@ -90,12 +94,16 @@ const commentSlice = createSlice({
           break;
         }
       }
+
+      state.isChanged = true;
     },
 
     updateComment(state, action) {
       const targetComment = findComment(state.comments, action.payload.id);
 
       targetComment.content = action.payload.content;
+
+      state.isChanged = true;
     },
   },
 });
