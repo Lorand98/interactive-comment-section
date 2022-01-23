@@ -13,6 +13,10 @@ import TextArea from '../UI/TextArea';
 import SubmitButton from '../UI/SubmitButton';
 import { commentActions } from '../../store';
 import Modal from '../UI/Modal';
+import {
+  calculateApproximateElapsedTimeString,
+  calculateElapsedTimeInSeconds,
+} from '../../utilts/utils';
 
 function CommentContent(props) {
   const dispatch = useDispatch();
@@ -25,6 +29,15 @@ function CommentContent(props) {
   const userImagePng = props.user.image.png.replace('./', '');
   const currentUser = useSelector((state) => state.currentUser);
   const userIsCurrentUser = currentUser.username === props.user.username;
+
+  const secondsElapsedSinceCommCreation = calculateElapsedTimeInSeconds(
+    props.createdAt,
+    new Date().getTime()
+  );
+
+  const approximateElapsedTime = calculateApproximateElapsedTimeString(
+    secondsElapsedSinceCommCreation
+  );
 
   const replyCommentHandler = () => {
     setReplyingInProgress((prevState) => !prevState);
@@ -110,7 +123,7 @@ function CommentContent(props) {
             )}
 
             <span className={classes['comment__content__details__created-at']}>
-              {props.createdAt}
+              {approximateElapsedTime}
             </span>
           </div>
           <div className={classes['comment__content__actions']}>

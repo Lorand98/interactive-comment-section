@@ -95,9 +95,13 @@
       align-items: center;
       gap: 1.4rem;
 
+      @include mixins.respond(tab-land) {
+        gap: 0.7rem;
+      }
+
       @include mixins.respond(tab-port) {
         grid-column: 1/-1;
-        gap: 0.7rem;
+        gap: 0.5rem;
       }
 
       & > * {
@@ -126,17 +130,27 @@
           padding: 0 0.5rem;
         }
       }
+
+      &__created-at {
+        @include mixins.respond(tab-land) {
+          font-size: 1.4rem;
+        }
+      }
     }
 
     &__actions {
       grid-row: 1;
-      grid-column: 3;
+      grid-column: 4;
       justify-self: end;
 
       display: flex;
       justify-content: flex-end;
       align-items: center;
       gap: 3rem;
+
+      @include mixins.respond(tab-land) {
+        gap: 2rem;
+      }
 
       @include mixins.respond(tab-port) {
         grid-row: 4;

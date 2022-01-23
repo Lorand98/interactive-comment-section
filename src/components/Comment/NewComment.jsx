@@ -25,6 +25,7 @@ const NewComment = forwardRef((props, ref) => {
       commentActions.addComment({
         content: newComment,
         user: user,
+        createdAt: new Date().getTime(),
         replyingTo: props.replyingTo,
         parentCommentId: props.parentCommentId,
       })
