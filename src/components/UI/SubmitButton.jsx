@@ -5,6 +5,7 @@ function SubmitButton(props) {
     <button
       className={`${classes['submit-btn']} ${props.className}`}
       onClick={props.onClick}
+      disabled={props.disabled}
     >
       {props.children}
     </button>

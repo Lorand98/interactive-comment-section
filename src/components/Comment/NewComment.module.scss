@@ -54,4 +54,20 @@ $general-gap: 1.5rem;
       justify-self: end;
     }
   }
+
+  &__empty-alert-btn {
+    display: block;
+    border: none;
+    background-color: variables.$color-soft-red;
+    color: variables.$color-white;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    margin: 2rem auto 0;
+    cursor: pointer;
+
+    &:hover {
+      background-color: variables.$color-pale-red;
+    }
+  }
 }

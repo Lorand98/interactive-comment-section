@@ -7,8 +7,11 @@ import React, { useState, forwardRef } from 'react';
 import SubmitButton from '../UI/SubmitButton';
 import TextArea from '../UI/TextArea';
 import { commentActions } from '../../store';
+import Modal from '../UI/Modal';
 
 const NewComment = forwardRef((props, ref) => {
+  const [submitEmptyText, setSubmitEmptyText] = useState(false);
+
   const user = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
 
@@ -21,6 +24,10 @@ const NewComment = forwardRef((props, ref) => {
   };
 
   const submitCommentHandler = () => {
+    if (newComment.trim() === '') {
+      setSubmitEmptyText(true);
+      return;
+    }
     dispatch(
       commentActions.addComment({
         content: newComment,
@@ -58,6 +65,20 @@ const NewComment = forwardRef((props, ref) => {
           {props.action}
         </SubmitButton>
       </div>
+      {submitEmptyText && (
+        <Modal>
+          <p>
+            Your comment doesn't have any content. Please write something before
+            submitting!
+          </p>
+          <button
+            onClick={setSubmitEmptyText.bind(null, false)}
+            className={classes['new-comment__empty-alert-btn']}
+          >
+            Ok
+          </button>
+        </Modal>
+      )}
     </Card>
   );
 });

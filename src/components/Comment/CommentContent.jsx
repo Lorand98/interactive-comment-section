@@ -170,6 +170,7 @@ function CommentContent(props) {
               <SubmitButton
                 className={classes['comment__content__update-btn']}
                 onClick={commentUpdateHandler}
+                disabled={editedCommentText === ''}
               >
                 Update
               </SubmitButton>
