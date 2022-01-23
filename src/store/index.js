@@ -16,6 +16,15 @@ const findComment = (comments, searchedCommentId) => {
   }
 };
 
+const sortFirstLevelComments = (comments) => {
+  const lol = comments.sort((comment1, comment2) => {
+    console.log(comment1.score, comment2.score);
+    return comment2.score - comment1.score;
+  });
+
+  console.log(lol);
+};
+
 const commentSlice = createSlice({
   name: 'comments',
   initialState: { comments: [], numberOfComments: 0 },
@@ -35,6 +44,8 @@ const commentSlice = createSlice({
         },
         0
       );
+
+      sortFirstLevelComments(state.comments);
     },
 
     addComment(state, action) {
@@ -63,12 +74,16 @@ const commentSlice = createSlice({
           replies: [],
         });
       }
+
+      sortFirstLevelComments(state.comments);
     },
 
     changeCommentScore(state, action) {
       const targetComment = findComment(state.comments, action.payload.id);
 
       action.payload.increase ? ++targetComment.score : --targetComment.score;
+
+      sortFirstLevelComments(state.comments);
     },
 
     deleteComment(state, action) {
