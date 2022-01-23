@@ -1,10 +1,13 @@
 @use '../../sass/abstracts/variables.module';
 @use '../../sass/abstracts/mixins.module';
+@use '../../sass/base/animations.module';
 
 .comment {
   display: grid;
 
   grid-template-rows: auto auto;
+
+  animation: fadein 0.3s ease-out;
 
   &__content-container {
     grid-column: 1/-1;
