@@ -5,6 +5,9 @@ export const INITIAL_COMMENTS_DATA = {
       webp: './images/avatars/image-juliusomo.webp',
     },
     username: 'juliusomo',
+
+    upvotes: [],
+    downvotes: [],
   },
   comments: [
     {

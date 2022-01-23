@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import NewComment from './NewComment';
 import TextArea from '../UI/TextArea';
 import SubmitButton from '../UI/SubmitButton';
-import { commentActions } from '../../store';
+import { commentActions, currentUserActions } from '../../store';
 import Modal from '../UI/Modal';
 import {
   calculateApproximateElapsedTimeString,
@@ -29,6 +29,13 @@ function CommentContent(props) {
   const userImagePng = props.user.image.png.replace('./', '');
   const currentUser = useSelector((state) => state.currentUser);
   const userIsCurrentUser = currentUser.username === props.user.username;
+
+  const upvoteNotAllowed = currentUser.upvotes.some(
+    (upvote) => upvote === props.id
+  );
+  const downVoteNotAllowed = currentUser.downvotes.some(
+    (downvote) => downvote === props.id
+  );
 
   const secondsElapsedSinceCommCreation = calculateElapsedTimeInSeconds(
     props.createdAt,
@@ -63,12 +70,33 @@ function CommentContent(props) {
   };
 
   const changeScoreHandler = (increase) => {
-    dispatch(
-      commentActions.changeCommentScore({
-        id: props.id,
-        increase,
-      })
+    console.log(
+      currentUser.upvotes.some((upvote) => upvote === props.id),
+      props.id
     );
+    if (increase && !upvoteNotAllowed) {
+      dispatch(currentUserActions.upvoteComment({ id: props.id }));
+
+      dispatch(
+        commentActions.changeCommentScore({
+          id: props.id,
+          increase,
+        })
+      );
+
+      return;
+    }
+
+    if (!increase && !downVoteNotAllowed) {
+      dispatch(currentUserActions.downvoteComment({ id: props.id }));
+
+      dispatch(
+        commentActions.changeCommentScore({
+          id: props.id,
+          increase,
+        })
+      );
+    }
   };
 
   const deleteCommentHandler = () => {
@@ -87,6 +115,7 @@ function CommentContent(props) {
             <button
               className={classes['comment__content__score__btn']}
               onClick={changeScoreHandler.bind(null, true)}
+              disabled={upvoteNotAllowed}
             >
               <IconPlusMinus
                 className={classes['comment__content__score__btn__icon']}
@@ -99,6 +128,7 @@ function CommentContent(props) {
             <button
               className={classes['comment__content__score__btn']}
               onClick={changeScoreHandler.bind(null, false)}
+              disabled={downVoteNotAllowed}
             >
               <IconPlusMinus
                 className={classes['comment__content__score__btn__icon']}

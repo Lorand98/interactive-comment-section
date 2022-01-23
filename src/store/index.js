@@ -17,12 +17,9 @@ const findComment = (comments, searchedCommentId) => {
 };
 
 const sortFirstLevelComments = (comments) => {
-  const lol = comments.sort((comment1, comment2) => {
-    console.log(comment1.score, comment2.score);
+  comments.sort((comment1, comment2) => {
     return comment2.score - comment1.score;
   });
-
-  console.log(lol);
 };
 
 const commentSlice = createSlice({
@@ -74,16 +71,12 @@ const commentSlice = createSlice({
           replies: [],
         });
       }
-
-      sortFirstLevelComments(state.comments);
     },
 
     changeCommentScore(state, action) {
       const targetComment = findComment(state.comments, action.payload.id);
 
       action.payload.increase ? ++targetComment.score : --targetComment.score;
-
-      sortFirstLevelComments(state.comments);
     },
 
     deleteComment(state, action) {
@@ -92,6 +85,7 @@ const commentSlice = createSlice({
           state.comments = state.comments.filter(
             (comment) => comment.id !== action.payload.id
           );
+          sortFirstLevelComments(state.comments);
 
           break;
         }
@@ -123,11 +117,32 @@ const currentUserSlice = createSlice({
       webp: '',
     },
     username: '',
+
+    upvotes: [],
+    downvotes: [],
   },
   reducers: {
     setCurrentUser(state, action) {
       state.image = action.payload.image;
       state.username = action.payload.username;
+    },
+
+    upvoteComment(state, action) {
+      const upvotedCommentIndex = state.downvotes.indexOf(action.payload.id);
+      if (upvotedCommentIndex > -1) {
+        state.downvotes.splice(upvotedCommentIndex, 1);
+      } else if (!state.upvotes.some((vote) => vote === action.payload.id)) {
+        state.upvotes.push(action.payload.id);
+      }
+    },
+
+    downvoteComment(state, action) {
+      const downvotedCommentIndex = state.upvotes.indexOf(action.payload.id);
+      if (downvotedCommentIndex > -1) {
+        state.upvotes.splice(downvotedCommentIndex, 1);
+      } else if (!state.downvotes.some((vote) => vote === action.payload.id)) {
+        state.downvotes.push(action.payload.id);
+      }
     },
   },
 });

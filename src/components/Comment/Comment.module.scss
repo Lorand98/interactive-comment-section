@@ -71,6 +71,10 @@
         &:hover &__icon {
           fill: variables.$color-moderate-blue;
         }
+
+        &:disabled {
+          cursor: not-allowed;
+        }
       }
 
       &__value {
