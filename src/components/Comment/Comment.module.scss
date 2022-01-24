@@ -75,6 +75,10 @@
         &:disabled {
           cursor: not-allowed;
         }
+
+        &:disabled &__icon {
+          fill: variables.$color-moderate-blue;
+        }
       }
 
       &__value {

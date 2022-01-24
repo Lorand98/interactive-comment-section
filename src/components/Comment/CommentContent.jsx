@@ -70,10 +70,6 @@ function CommentContent(props) {
   };
 
   const changeScoreHandler = (increase) => {
-    console.log(
-      currentUser.upvotes.some((upvote) => upvote === props.id),
-      props.id
-    );
     if (increase && !upvoteNotAllowed) {
       dispatch(currentUserActions.upvoteComment({ id: props.id }));
 

@@ -23,16 +23,17 @@ function CommentSection() {
         'comments',
         JSON.stringify(INITIAL_COMMENTS_DATA.comments)
       );
+
+      commentsData = JSON.parse(localStorage.getItem('comments'));
     }
     if (!currentUser || currentUser.image.png === '') {
       localStorage.setItem(
         'currentUser',
         JSON.stringify(INITIAL_COMMENTS_DATA.currentUser)
       );
-    }
 
-    commentsData = JSON.parse(localStorage.getItem('comments'));
-    currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    }
 
     dispatch(
       commentActions.setComments({
@@ -43,13 +44,16 @@ function CommentSection() {
       currentUserActions.setCurrentUser({
         image: currentUser.image,
         username: currentUser.username,
+        upvotes: currentUser.upvotes,
+        downvotes: currentUser.downvotes,
       })
     );
   }, [dispatch]);
 
   useEffect(() => {
     localStorage.setItem('comments', JSON.stringify(comments));
-  }, [comments]);
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  }, [comments, currentUser]);
 
   return (
     <section className={classes['comment-section']}>

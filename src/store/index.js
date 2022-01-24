@@ -24,25 +24,33 @@ const sortFirstLevelComments = (comments) => {
 
 const commentSlice = createSlice({
   name: 'comments',
-  initialState: { comments: [], numberOfComments: 0 },
+  initialState: { comments: [], nextId: 0 },
   reducers: {
     setComments(state, action) {
       state.comments = [...action.payload.comments];
 
-      state.numberOfComments = action.payload.comments.reduce(
-        (acc, comment) => {
-          if (comment.replies?.length > 0) {
-            const numberOfReplies = comment.replies.reduce((acc) => ++acc, 0);
+      if (state.comments.length > 0) {
+        const currentlyUsedIdList = state.comments.map((comment) => {
+          const commentId = comment.id;
 
-            return acc + numberOfReplies + 1;
+          if (comment.replies?.length > 0) {
+            const commentRepliesIdList = comment.replies.map(
+              (reply) => reply.id
+            );
+            return [commentId, commentRepliesIdList];
           }
 
-          return ++acc;
-        },
-        0
-      );
+          return commentId;
+        });
 
-      sortFirstLevelComments(state.comments);
+        const currentlyUsedIdListFlattened = currentlyUsedIdList.flat(3);
+
+        const maxId = Math.max(...currentlyUsedIdListFlattened);
+
+        state.nextId = maxId + 1;
+
+        sortFirstLevelComments(state.comments);
+      }
     },
 
     addComment(state, action) {
@@ -54,7 +62,7 @@ const commentSlice = createSlice({
         );
 
         parentComment.replies.push({
-          id: ++state.numberOfComments,
+          id: state.nextId++,
           content: action.payload.content,
           createdAt: action.payload.createdAt,
           score: 0,
@@ -63,7 +71,7 @@ const commentSlice = createSlice({
         });
       } else {
         state.comments.push({
-          id: ++state.numberOfComments,
+          id: state.nextId++,
           content: action.payload.content,
           createdAt: action.payload.createdAt,
           score: 0,
@@ -125,6 +133,8 @@ const currentUserSlice = createSlice({
     setCurrentUser(state, action) {
       state.image = action.payload.image;
       state.username = action.payload.username;
+      state.upvotes = [...action.payload.upvotes];
+      state.downvotes = [...action.payload.downvotes];
     },
 
     upvoteComment(state, action) {
